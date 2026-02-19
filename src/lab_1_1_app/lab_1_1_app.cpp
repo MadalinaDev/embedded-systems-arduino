@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-#include "lab_1_app.h"
+#include "lab_1_1_app.h"
 
 #include "dd_led/dd_led.h"
 
@@ -9,7 +9,7 @@ namespace {
 	String inputBuffer;
 }
 
-static void lab1ProcessCommand(String cmd) {
+static void lab1_1ProcessCommand(String cmd) {
 	cmd.trim();
 	cmd.toLowerCase();
 
@@ -25,7 +25,7 @@ static void lab1ProcessCommand(String cmd) {
 	}
 }
 
-void lab1AppSetup() {
+void lab1_1AppSetup() {
 	Serial.begin(kBaudRate);
 	ddLedSetup();
 
@@ -33,12 +33,12 @@ void lab1AppSetup() {
 	Serial.println("Type: led on  OR  led off");
 }
 
-void lab1AppLoop() {
+void lab1_1AppLoop() {
 	while (Serial.available()) {
 		char c = Serial.read();
 
 		if (c == '\n' || c == '\r') {
-			lab1ProcessCommand(inputBuffer);
+			lab1_1ProcessCommand(inputBuffer);
 			inputBuffer = "";
 		} else {
 			inputBuffer += c;

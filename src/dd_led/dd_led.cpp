@@ -21,3 +21,16 @@ void ddLedOn() {
 void ddLedOff() {
   digitalWrite(LED_PIN, LOW);
 }
+
+void ddLedInitPin(uint8_t pin) {
+  pinMode(pin, OUTPUT);
+  digitalWrite(pin, LOW);
+}
+
+void ddLedOnPin(uint8_t pin) {
+  digitalWrite(pin, HIGH);
+}
+
+void ddLedOffPin(uint8_t pin) {
+  digitalWrite(pin, LOW);
+}
