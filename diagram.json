@@ -1,0 +1,48 @@
+{
+    "version": 1,
+    "author": "STDIO External LED Lab",
+    "parts": [
+        {
+            "type": "wokwi-arduino-mega",
+            "id": "mega",
+            "top": 0,
+            "left": 0,
+            "attrs": {}
+        },
+        {
+            "type": "wokwi-led",
+            "id": "led1",
+            "top": -50,
+            "left": 200,
+            "attrs": {
+                "color": "red"
+            }
+        },
+        {
+            "type": "wokwi-resistor",
+            "id": "r1",
+            "top": 0,
+            "left": 200,
+            "attrs": {
+                "value": "220"
+            }
+        }
+    ],
+    "connections": [
+        [
+            "mega:8",
+            "r1:1",
+            "green"
+        ],
+        [
+            "r1:2",
+            "led1:A",
+            "green"
+        ],
+        [
+            "led1:C",
+            "mega:GND.1",
+            "black"
+        ]
+    ]
+}
