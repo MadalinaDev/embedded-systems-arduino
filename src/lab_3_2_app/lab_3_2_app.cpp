@@ -1,10 +1,21 @@
 #include <Arduino.h>
 #include <Arduino_FreeRTOS.h>
 #include <semphr.h>
+#include <stdio.h>
 
 #include "lab_3_2_app.h"
 #include "../dd_led/dd_led.h"
 #include "../dd_button/dd_button.h"
+
+// STDIO stream redirect to Serial
+static FILE serialOut;
+
+static int serialPutchar(char c, FILE *stream) {
+    (void)stream;
+    if (c == '\n') Serial.write('\r');
+    Serial.write(c);
+    return 0;
+}
 
 // ─── Pin Definitions (same as bare-metal) ────────────
 static const uint8_t kButtonPin    = 6;
@@ -178,21 +189,19 @@ static void taskReportRTOS(void *pvParameters) {
         unsigned long tsd, tld;
         getAndResetStats(&tp, &sp, &lp, &tsd, &tld);
 
-        Serial.println(F("=== Press Statistics Report ==="));
-        Serial.print(F("Total presses:          ")); Serial.println(tp);
-        Serial.print(F("Short presses (<500ms): ")); Serial.println(sp);
-        Serial.print(F("Long presses (>=500ms): ")); Serial.println(lp);
+        printf("=== Press Statistics Report ===\n");
+        printf("Total presses:          %u\n", tp);
+        printf("Short presses (<500ms): %u\n", sp);
+        printf("Long presses (>=500ms): %u\n", lp);
 
         if (tp > 0) {
             unsigned long avgDur = (tsd + tld) / tp;
-            Serial.print(F("Average duration:       "));
-            Serial.print(avgDur);
-            Serial.println(F(" ms"));
+            printf("Average duration:       %lu ms\n", avgDur);
         } else {
-            Serial.println(F("Average duration:       N/A"));
+            printf("Average duration:       N/A\n");
         }
 
-        Serial.println(F("==============================="));
+        printf("===============================\n");
 
         vTaskDelayUntil(&xLastWakeTime, pdMS_TO_TICKS(REC_REPORT));
     }
@@ -201,6 +210,10 @@ static void taskReportRTOS(void *pvParameters) {
 // ─── App Entry Points ────────────────────────────────
 void lab3_2AppSetup() {
     Serial.begin(9600);
+
+    // Redirect stdout to Serial via STDIO
+    fdev_setup_stream(&serialOut, serialPutchar, NULL, _FDEV_SETUP_WRITE);
+    stdout = &serialOut;
 
     // Setup button via dd_button driver (internal pull-up)
     ddButtonInitPin(kButtonPin);
@@ -214,8 +227,8 @@ void lab3_2AppSetup() {
     xPressEventSemaphore = xSemaphoreCreateBinary();
     xStatsMutex          = xSemaphoreCreateMutex();
 
-    Serial.println(F("Lab 3.2 - FreeRTOS Preemptive Scheduler"));
-    Serial.println(F("Monitoring button presses..."));
+    printf("Lab 3.2 - FreeRTOS Preemptive Scheduler\n");
+    printf("Monitoring button presses...\n");
 
     // Create tasks (priority: btn=2 highest, stats=1, report=1)
     xTaskCreate(taskBtnDetectRTOS, "BtnDet",  128, NULL, 2, NULL);

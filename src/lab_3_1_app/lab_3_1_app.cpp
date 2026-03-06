@@ -1,7 +1,18 @@
 #include <Arduino.h>
+#include <stdio.h>
 #include "lab_3_1_app.h"
 #include "../dd_led/dd_led.h"
 #include "../dd_button/dd_button.h"
+
+// STDIO stream redirect to Serial
+static FILE serialOut;
+
+static int serialPutchar(char c, FILE *stream) {
+    (void)stream;
+    if (c == '\n') Serial.write('\r');
+    Serial.write(c);
+    return 0;
+}
 
 // ─── Pin Definitions ─────────────────────────────────
 static const uint8_t kButtonPin    = 6;
@@ -165,21 +176,19 @@ static void taskReport(void) {
     unsigned long tsd, tld;
     getAndResetStats(&tp, &sp, &lp, &tsd, &tld);
 
-    Serial.println(F("=== Press Statistics Report ==="));
-    Serial.print(F("Total presses:          ")); Serial.println(tp);
-    Serial.print(F("Short presses (<500ms): ")); Serial.println(sp);
-    Serial.print(F("Long presses (>=500ms): ")); Serial.println(lp);
+    printf("=== Press Statistics Report ===\n");
+    printf("Total presses:          %u\n", tp);
+    printf("Short presses (<500ms): %u\n", sp);
+    printf("Long presses (>=500ms): %u\n", lp);
 
     if (tp > 0) {
         unsigned long avgDur = (tsd + tld) / tp;
-        Serial.print(F("Average duration:       "));
-        Serial.print(avgDur);
-        Serial.println(F(" ms"));
+        printf("Average duration:       %lu ms\n", avgDur);
     } else {
-        Serial.println(F("Average duration:       N/A"));
+        printf("Average duration:       N/A\n");
     }
 
-    Serial.println(F("==============================="));
+    printf("===============================\n");
 }
 
 // ─── Scheduler Functions ─────────────────────────────
@@ -202,6 +211,10 @@ static void os_seq_scheduler_loop(void) {
 void lab3_1AppSetup() {
     Serial.begin(9600);
 
+    // Redirect stdout to Serial via STDIO
+    fdev_setup_stream(&serialOut, serialPutchar, NULL, _FDEV_SETUP_WRITE);
+    stdout = &serialOut;
+
     // Setup button via dd_button driver (internal pull-up)
     ddButtonInitPin(kButtonPin);
 
@@ -213,8 +226,8 @@ void lab3_1AppSetup() {
     // Init scheduler offsets
     os_seq_scheduler_setup();
 
-    Serial.println(F("Lab 3.1 - Bare-metal Sequential Scheduler"));
-    Serial.println(F("Monitoring button presses..."));
+    printf("Lab 3.1 - Bare-metal Sequential Scheduler\n");
+    printf("Monitoring button presses...\n");
 }
 
 void lab3_1AppLoop() {
