@@ -1,21 +1,3 @@
-/**
- * Lab 3.2 - FreeRTOS Preemptive Scheduler
- *
- * Button press duration monitoring with visual signaling and periodic reporting.
- * Preemptive multitasking with FreeRTOS: semaphores for event signaling,
- * mutexes for shared-data protection, vTaskDelayUntil for periodic execution.
- *
- * Task 1 (Button Detection): Monitors button, measures press duration,
- *         signals green LED (short <500ms) or red LED (long >=500ms).
- *         Uses binary semaphore to notify Task 2.
- * Task 2 (Statistics):       Waits on semaphore, counts presses, tracks durations,
- *         blinks yellow LED (5x short, 10x long).
- * Task 3 (Report):           Every 10s reports stats via Serial, resets counters.
- *         Uses mutex for safe access to shared statistics.
- */
-
-#ifdef USE_FREERTOS
-
 #include <Arduino.h>
 #include <Arduino_FreeRTOS.h>
 #include <semphr.h>
@@ -242,17 +224,3 @@ void lab3_2AppSetup() {
 void lab3_2AppLoop() {
     // FreeRTOS scheduler is running; this function should never execute.
 }
-
-#else  // USE_FREERTOS not defined — provide stubs so compilation succeeds
-
-#include <Arduino.h>
-#include "lab_3_2_app.h"
-
-void lab3_2AppSetup() {
-    Serial.begin(9600);
-    Serial.println(F("ERROR: Lab 3.2 requires FreeRTOS. Build with mega_freertos env."));
-}
-
-void lab3_2AppLoop() {}
-
-#endif // USE_FREERTOS

@@ -1,16 +1,3 @@
-/**
- * Lab 3.1 - Bare-metal Sequential Scheduler
- *
- * Button press duration monitoring with visual signaling and periodic reporting.
- * Non-preemptive, sequential task scheduler with recurrence and offset.
- *
- * Task 1 (Button Detection): Monitors button, measures press duration,
- *         signals green LED (short <500ms) or red LED (long >=500ms).
- * Task 2 (Statistics):       Counts presses, tracks durations,
- *         blinks yellow LED (5x short, 10x long).
- * Task 3 (Report):           Every 10s reports stats via Serial, resets counters.
- */
-
 #include <Arduino.h>
 #include "lab_3_1_app.h"
 #include "../dd_led/dd_led.h"

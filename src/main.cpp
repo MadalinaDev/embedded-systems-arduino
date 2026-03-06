@@ -14,7 +14,7 @@ enum class AppSelection {
   Lab3_2
 };
 
-const AppSelection kActiveApp = AppSelection::Lab3_2;
+const AppSelection kActiveApp = AppSelection::Lab3_1;
 
 void setup() {
   switch (kActiveApp) {
