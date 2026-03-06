@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include "lab_3_1_app.h"
 #include "../dd_led/dd_led.h"
+#include "../dd_button/dd_button.h"
 
 // ─── Pin Definitions ─────────────────────────────────
 static const uint8_t kButtonPin    = 6;
@@ -98,11 +99,15 @@ static void getAndResetStats(unsigned int *tp, unsigned int *sp, unsigned int *l
 }
 
 // ─── Task 1: Button Detection & Duration Measurement ─
-static bool          btnPrevState   = false;
-static unsigned long btnPressStart  = 0;
+static bool          btnPrevState      = false;
+static unsigned long btnPressStart     = 0;
+static uint8_t       btnDebounceCount  = 0;
+static int           btnStableState    = 0;
 
 static void taskBtnDetect(void) {
-    bool currentState = (digitalRead(kButtonPin) == LOW); // active-low (INPUT_PULLUP)
+    // Debounced read via dd_button driver (5 consecutive same-value reads)
+    int debounced = ddButtonReadDebouncedPin(kButtonPin, &btnDebounceCount, &btnStableState);
+    bool currentState = (debounced == 1);
 
     if (currentState && !btnPrevState) {
         // Button just pressed — start timing
@@ -197,8 +202,8 @@ static void os_seq_scheduler_loop(void) {
 void lab3_1AppSetup() {
     Serial.begin(9600);
 
-    // Setup button (internal pull-up)
-    pinMode(kButtonPin, INPUT_PULLUP);
+    // Setup button via dd_button driver (internal pull-up)
+    ddButtonInitPin(kButtonPin);
 
     // Setup LEDs
     ddLedInitPin(kGreenLedPin);

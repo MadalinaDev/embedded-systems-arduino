@@ -4,6 +4,7 @@
 
 #include "lab_3_2_app.h"
 #include "../dd_led/dd_led.h"
+#include "../dd_button/dd_button.h"
 
 // ─── Pin Definitions (same as bare-metal) ────────────
 static const uint8_t kButtonPin    = 6;
@@ -92,11 +93,15 @@ static void taskBtnDetectRTOS(void *pvParameters) {
 
     TickType_t xLastWakeTime = xTaskGetTickCount();
 
-    bool prevState         = false;
+    bool prevState           = false;
     unsigned long pressStart = 0;
+    uint8_t debounceCount    = 0;
+    int stableState          = 0;
 
     for (;;) {
-        bool currentState = (digitalRead(kButtonPin) == LOW);
+        // Debounced read via dd_button driver
+        int debounced = ddButtonReadDebouncedPin(kButtonPin, &debounceCount, &stableState);
+        bool currentState = (debounced == 1);
 
         if (currentState && !prevState) {
             // Button just pressed
@@ -197,8 +202,8 @@ static void taskReportRTOS(void *pvParameters) {
 void lab3_2AppSetup() {
     Serial.begin(9600);
 
-    // Setup button (internal pull-up)
-    pinMode(kButtonPin, INPUT_PULLUP);
+    // Setup button via dd_button driver (internal pull-up)
+    ddButtonInitPin(kButtonPin);
 
     // Setup LEDs
     ddLedInitPin(kGreenLedPin);
