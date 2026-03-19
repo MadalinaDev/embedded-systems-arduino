@@ -1,6 +1,6 @@
 {
     "version": 1,
-    "author": "Lab 4.1 - Binary Threshold Alerting",
+    "author": "Lab 4.2 - Analog Signal Conditioning",
     "parts": [
         {
             "type": "wokwi-arduino-mega",
@@ -30,24 +30,6 @@
             "id": "r1",
             "top": -100,
             "left": 300,
-            "attrs": {
-                "value": "220"
-            }
-        },
-        {
-            "type": "wokwi-led",
-            "id": "ledRed",
-            "top": -150,
-            "left": 380,
-            "attrs": {
-                "color": "red"
-            }
-        },
-        {
-            "type": "wokwi-resistor",
-            "id": "r2",
-            "top": -100,
-            "left": 380,
             "attrs": {
                 "value": "220"
             }
@@ -87,24 +69,6 @@
         [
             "ledGreen:C",
             "mega:GND.2",
-            "black",
-            []
-        ],
-        [
-            "mega:10",
-            "r2:1",
-            "red",
-            []
-        ],
-        [
-            "r2:2",
-            "ledRed:A",
-            "red",
-            []
-        ],
-        [
-            "ledRed:C",
-            "mega:GND.3",
             "black",
             []
         ]
