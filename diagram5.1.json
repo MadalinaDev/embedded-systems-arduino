@@ -1,6 +1,6 @@
 {
     "version": 1,
-    "author": "Lab 5.2 - Dual Sensor Monitoring (Variant C)",
+    "author": "Lab 5.1 - Binary Actuator Control",
     "parts": [
         {
             "type": "wokwi-arduino-mega",
@@ -10,45 +10,27 @@
             "attrs": {}
         },
         {
-            "type": "wokwi-potentiometer",
-            "id": "pot1",
-            "top": -220,
-            "left": -100,
-            "attrs": {
-                "label": "Analog Temp Sensor"
-            }
-        },
-        {
-            "type": "wokwi-potentiometer",
-            "id": "pot2",
-            "top": -220,
-            "left": 50,
-            "attrs": {
-                "label": "Digital Temp Sensor"
-            }
-        },
-        {
             "type": "wokwi-relay-module",
             "id": "relay1",
-            "top": -250,
-            "left": 200,
+            "top": -220,
+            "left": 50,
             "attrs": {}
         },
         {
             "type": "wokwi-led",
-            "id": "ledLoad",
-            "top": -350,
-            "left": 250,
+            "id": "ledRelay",
+            "top": -320,
+            "left": 100,
             "attrs": {
                 "color": "white",
-                "label": "Cooling Load"
+                "label": "Relay Load"
             }
         },
         {
             "type": "wokwi-resistor",
             "id": "rLoad",
-            "top": -300,
-            "left": 250,
+            "top": -270,
+            "left": 100,
             "attrs": {
                 "value": "220"
             }
@@ -57,17 +39,17 @@
             "type": "wokwi-led",
             "id": "ledGreen",
             "top": -180,
-            "left": 380,
+            "left": 300,
             "attrs": {
                 "color": "green",
-                "label": "Normal"
+                "label": "OFF Indicator"
             }
         },
         {
             "type": "wokwi-resistor",
             "id": "r1",
             "top": -130,
-            "left": 380,
+            "left": 300,
             "attrs": {
                 "value": "220"
             }
@@ -76,17 +58,17 @@
             "type": "wokwi-led",
             "id": "ledRed",
             "top": -180,
-            "left": 460,
+            "left": 400,
             "attrs": {
                 "color": "red",
-                "label": "Alert"
+                "label": "ON Indicator"
             }
         },
         {
             "type": "wokwi-resistor",
             "id": "r2",
             "top": -130,
-            "left": 460,
+            "left": 400,
             "attrs": {
                 "value": "220"
             }
@@ -94,48 +76,12 @@
         {
             "type": "wokwi-lcd1602",
             "id": "lcd1",
-            "top": -350,
-            "left": 350,
+            "top": -300,
+            "left": 150,
             "attrs": {}
         }
     ],
     "connections": [
-        [
-            "pot1:VCC",
-            "mega:5V",
-            "red",
-            []
-        ],
-        [
-            "pot1:SIG",
-            "mega:A0",
-            "green",
-            []
-        ],
-        [
-            "pot1:GND",
-            "mega:GND.1",
-            "black",
-            []
-        ],
-        [
-            "pot2:VCC",
-            "mega:5V",
-            "red",
-            []
-        ],
-        [
-            "pot2:SIG",
-            "mega:A1",
-            "blue",
-            []
-        ],
-        [
-            "pot2:GND",
-            "mega:GND.2",
-            "black",
-            []
-        ],
         [
             "mega:7",
             "relay1:IN",
@@ -150,14 +96,8 @@
         ],
         [
             "relay1:GND",
-            "mega:GND.3",
+            "mega:GND.1",
             "black",
-            []
-        ],
-        [
-            "relay1:COM",
-            "mega:5V",
-            "red",
             []
         ],
         [
@@ -168,14 +108,20 @@
         ],
         [
             "rLoad:2",
-            "ledLoad:A",
+            "ledRelay:A",
             "orange",
             []
         ],
         [
-            "ledLoad:C",
+            "ledRelay:C",
             "mega:GND.7",
             "black",
+            []
+        ],
+        [
+            "relay1:COM",
+            "mega:5V",
+            "red",
             []
         ],
         [
@@ -192,7 +138,7 @@
         ],
         [
             "ledGreen:C",
-            "mega:GND.4",
+            "mega:GND.2",
             "black",
             []
         ],
@@ -210,13 +156,13 @@
         ],
         [
             "ledRed:C",
-            "mega:GND.5",
+            "mega:GND.3",
             "black",
             []
         ],
         [
             "lcd1:VSS",
-            "mega:GND.6",
+            "mega:GND.4",
             "black",
             []
         ],
@@ -228,7 +174,7 @@
         ],
         [
             "lcd1:V0",
-            "mega:GND.8",
+            "mega:GND.5",
             "black",
             []
         ],
@@ -276,7 +222,7 @@
         ],
         [
             "lcd1:K",
-            "mega:GND.9",
+            "mega:GND.6",
             "black",
             []
         ]
