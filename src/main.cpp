@@ -9,6 +9,8 @@
 #include "lab_4_2_app/lab_4_2_app.h"
 #include "lab_5_1_app/lab_5_1_app.h"
 #include "lab_5_2_app/lab_5_2_app.h"
+#include "lab_6_1_app/lab_6_1_app.h"
+#include "lab_6_2_app/lab_6_2_app.h"
 
 enum class AppSelection {
   Lab0,
@@ -19,10 +21,12 @@ enum class AppSelection {
   Lab4_1,
   Lab4_2,
   Lab5_1,
-  Lab5_2
+  Lab5_2,
+  Lab6_1,
+  Lab6_2
 };
 
-const AppSelection kActiveApp = AppSelection::Lab5_2;
+const AppSelection kActiveApp = AppSelection::Lab6_2;
 
 void setup() {
   switch (kActiveApp) {
@@ -35,6 +39,8 @@ void setup() {
     case AppSelection::Lab4_2: lab4_2AppSetup(); break;
     case AppSelection::Lab5_1: lab5_1AppSetup(); break;
     case AppSelection::Lab5_2: lab5_2AppSetup(); break;
+    case AppSelection::Lab6_1: lab6_1AppSetup(); break;
+    case AppSelection::Lab6_2: lab6_2AppSetup(); break;
   }
 }
 
@@ -49,5 +55,7 @@ void loop() {
     case AppSelection::Lab4_2: lab4_2AppLoop(); break;
     case AppSelection::Lab5_1: lab5_1AppLoop(); break;
     case AppSelection::Lab5_2: lab5_2AppLoop(); break;
+    case AppSelection::Lab6_1: lab6_1AppLoop(); break;
+    case AppSelection::Lab6_2: lab6_2AppLoop(); break;
   }
 }

@@ -1,6 +1,6 @@
 {
     "version": 1,
-    "author": "Lab 6.2 - PID Temperature Control",
+    "author": "Lab 6.1 - ON-OFF Control with Hysteresis",
     "parts": [
         {
             "type": "wokwi-arduino-mega",
@@ -19,20 +19,27 @@
             }
         },
         {
+            "type": "wokwi-relay-module",
+            "id": "relay1",
+            "top": -220,
+            "left": 50,
+            "attrs": {}
+        },
+        {
             "type": "wokwi-led",
-            "id": "ledHeater",
-            "top": -250,
-            "left": 60,
+            "id": "ledLoad",
+            "top": -320,
+            "left": 90,
             "attrs": {
-                "color": "orange",
-                "label": "Heater (PWM)"
+                "color": "white",
+                "label": "Heater Load"
             }
         },
         {
             "type": "wokwi-resistor",
-            "id": "rHeater",
-            "top": -200,
-            "left": 60,
+            "id": "rLoad",
+            "top": -270,
+            "left": 90,
             "attrs": {
                 "value": "220"
             }
@@ -40,18 +47,18 @@
         {
             "type": "wokwi-led",
             "id": "ledGreen",
-            "top": -250,
-            "left": 180,
+            "top": -220,
+            "left": 280,
             "attrs": {
                 "color": "green",
-                "label": "Output<50%"
+                "label": "Heater OFF"
             }
         },
         {
             "type": "wokwi-resistor",
             "id": "r1",
-            "top": -200,
-            "left": 180,
+            "top": -170,
+            "left": 280,
             "attrs": {
                 "value": "220"
             }
@@ -59,18 +66,18 @@
         {
             "type": "wokwi-led",
             "id": "ledRed",
-            "top": -250,
-            "left": 260,
+            "top": -220,
+            "left": 360,
             "attrs": {
                 "color": "red",
-                "label": "Output>=50%"
+                "label": "Heater ON"
             }
         },
         {
             "type": "wokwi-resistor",
             "id": "r2",
-            "top": -200,
-            "left": 260,
+            "top": -170,
+            "left": 360,
             "attrs": {
                 "value": "220"
             }
@@ -78,8 +85,8 @@
         {
             "type": "wokwi-lcd1602",
             "id": "lcd1",
-            "top": -380,
-            "left": 100,
+            "top": -360,
+            "left": 150,
             "attrs": {}
         }
     ],
@@ -103,20 +110,44 @@
             []
         ],
         [
-            "mega:6",
-            "rHeater:1",
+            "mega:7",
+            "relay1:IN",
             "orange",
             []
         ],
         [
-            "rHeater:2",
-            "ledHeater:A",
-            "orange",
+            "relay1:VCC",
+            "mega:5V",
+            "red",
             []
         ],
         [
-            "ledHeater:C",
+            "relay1:GND",
             "mega:GND.2",
+            "black",
+            []
+        ],
+        [
+            "relay1:COM",
+            "mega:5V",
+            "red",
+            []
+        ],
+        [
+            "relay1:NO",
+            "rLoad:1",
+            "orange",
+            []
+        ],
+        [
+            "rLoad:2",
+            "ledLoad:A",
+            "orange",
+            []
+        ],
+        [
+            "ledLoad:C",
+            "mega:GND.3",
             "black",
             []
         ],
@@ -134,7 +165,7 @@
         ],
         [
             "ledGreen:C",
-            "mega:GND.3",
+            "mega:GND.4",
             "black",
             []
         ],
@@ -152,13 +183,13 @@
         ],
         [
             "ledRed:C",
-            "mega:GND.4",
+            "mega:GND.5",
             "black",
             []
         ],
         [
             "lcd1:VSS",
-            "mega:GND.5",
+            "mega:GND.6",
             "black",
             []
         ],
@@ -170,7 +201,7 @@
         ],
         [
             "lcd1:V0",
-            "mega:GND.6",
+            "mega:GND.7",
             "black",
             []
         ],
@@ -218,7 +249,7 @@
         ],
         [
             "lcd1:K",
-            "mega:GND.7",
+            "mega:GND.8",
             "black",
             []
         ]
